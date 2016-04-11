@@ -2,6 +2,15 @@
 	<body>
 		<h1>gx packge pinning</h1>
 		<p id="status">Loading...</p>
+		<h3>How this works...</h3>
+		<p>
+		Publish a gx package, and add the created .gx/lastpubver file to your git repo
+		push it up to github (only master branch is looked at) and then put your
+		github url in the textbox.
+
+		Once you hit submit, the server will verify that your package looks good
+		and then download and pin it.
+		</p>
 		<form action="pin_package" method="post">
 			<input type="text" name="ghurl">
 			<input type="submit" value="pin it!">
