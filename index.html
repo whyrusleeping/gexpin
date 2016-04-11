@@ -1,0 +1,43 @@
+<html>
+	<body>
+		<h1>gx packge pinning</h1>
+		<p id="status">Loading...</p>
+		<form action="pin_package" method="post">
+			<input type="text" name="ghurl">
+			<input type="submit" value="pin it!">
+		</form>
+		<table id="recents">
+			<tr>
+				<th>Package URL</th>
+				<th>Version</th>
+				<th>Hash</th>
+			</tr>
+		</table>
+		<script type="text/javascript">
+			var req = new XMLHttpRequest()
+			req.open( "GET", "/status", false )
+			req.send( null )
+			document.getElementById("status").innerHTML = req.responseText
+
+			var req = new XMLHttpRequest()
+			req.open( "GET", "/recent", false )
+			req.send( null )
+			rtab = document.getElementById("recents")
+			recents = JSON.parse(req.responseText)
+			for (var i in recents) {
+				r = recents[i]
+				var elem = document.createElement("tr")
+				var url = document.createElement("td")
+				url.innerText = r.Url
+				elem.appendChild(url)
+				v = document.createElement("td")
+				v.innerText = r.Version
+				elem.appendChild(v)
+				hash = document.createElement("td")
+				hash.innerText = r.Hash
+				elem.appendChild(hash)
+				rtab.appendChild(elem)
+			}
+		</script>
+	</body>
+</html>
