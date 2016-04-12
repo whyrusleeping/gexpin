@@ -11,6 +11,11 @@
 		Once you hit submit, the server will verify that your package looks good
 		and then download and pin it.
 		</p>
+		<p>
+		To expedite the transfer, you can connect your ipfs node directly to the gexpin server with:
+		<pre id="connect">
+		</pre>
+		</p>
 		<form action="pin_package" method="post">
 			<input type="text" name="ghurl">
 			<input type="submit" value="pin it!">
@@ -28,6 +33,11 @@
 			req.open( "GET", "/status", false )
 			req.send( null )
 			document.getElementById("status").innerHTML = req.responseText
+
+			var req = new XMLHttpRequest()
+			req.open("GET", "/node_addr", false)
+			req.send(null)
+			document.getElementById("connect").innerHTML = "ipfs swarm connect "+req.responseText
 
 			var req = new XMLHttpRequest()
 			req.open( "GET", "/recent", false )
