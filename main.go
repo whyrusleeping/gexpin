@@ -115,18 +115,26 @@ func main() {
 		vers := fields[0]
 		hash := fields[1]
 
-		fmt.Fprintf(w, "pinning %s version %s: %s\n", ghurl, vers, hash)
+		flusher := w.(http.Flusher)
+
+		fmt.Fprintln(w, "<!DOCTYPE html>")
+		fmt.Fprintf(w, "<p>pinning %s version %s: %s</p><br>", ghurl, vers, hash)
+		flusher.Flush()
 		refs, err := sh.Refs(hash, true)
 		if err != nil {
 			http.Error(w, err.Error(), 500)
 			return
 		}
 
+		fmt.Fprintln(w, "<ul>")
 		for ref := range refs {
-			fmt.Fprintln(w, ref)
+			fmt.Fprintf(w, "<li>%s</li>", ref)
+			flusher.Flush()
 		}
+		fmt.Fprintln(w, "</ul>")
 
-		fmt.Fprintln(w, "fetched all deps!\ncalling pin now...")
+		fmt.Fprintln(w, "<p>fetched all deps!<br>calling pin now...</p>")
+		flusher.Flush()
 
 		err = sh.Pin(hash)
 		if err != nil {
@@ -140,7 +148,8 @@ func main() {
 			return
 		}
 
-		fmt.Fprintln(w, "success!")
+		fmt.Fprintln(w, "<p>success!</p>")
+		fmt.Fprintln(w, "<a href='/'>back</a>")
 
 		recentlk.Lock()
 		recent[ghurl] = pkgInfo{
