@@ -1,5 +1,16 @@
 <html>
+<head>
+<link rel="stylesheet" href="/assets/css/normalize.css" />
+<link rel="stylesheet" href="/assets/css/skeleton.css" />
+<style>
+	table caption {
+	    padding-bottom: 10px;
+		border-bottom: 1px solid #ccc;
+	}
+</style>
+</head>
 	<body>
+	<div class="container">
 		<h1>gx package pinning</h1>
 		<p id="status">Loading...</p>
 		<h3>How this works...</h3>
@@ -17,16 +28,21 @@
 		</pre>
 		</p>
 		<form action="pin_package" method="post">
-			<input type="text" name="ghurl">
-			<input type="submit" value="pin it!">
+				<label for="ghurl">Github Link</label>
+				<input type="text" name="ghurl">
+				<button class="button-primary" type="submit">Pin it!</button>
 		</form>
-		<table id="recents">
+		<table class="u-full-width">
 			<caption>Recently Pinned GX Packages</caption>
-			<tr>
-				<th>Package URL</th>
-				<th>Version</th>
-				<th>Hash</th>
-			</tr>
+			<thead>
+				<tr>
+					<th>Package URL</th>
+					<th>Version</th>
+					<th>Hash</th>
+				</tr>
+			</thead>
+			<tbody id="recents">
+			</tbody>
 		</table>
 		<script type="text/javascript">
 			var req = new XMLHttpRequest()
@@ -59,5 +75,6 @@
 				rtab.appendChild(elem)
 			}
 		</script>
+	</div>
 	</body>
 </html>
