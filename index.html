@@ -27,9 +27,9 @@
 		<pre id="connect">
 		</pre>
 		</p>
-		<form action="pin_package" method="post">
+		<form action="pin_package" method="post" id="pinform">
 				<label for="ghurl">Github Link</label>
-				<input type="text" name="ghurl">
+				<input type="text" name="ghurl" id="ghurl">
 				<button class="button-primary" type="submit">Pin it!</button>
 		</form>
 		<table class="u-full-width">
@@ -39,12 +39,29 @@
 					<th>Package URL</th>
 					<th>Version</th>
 					<th>Hash</th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody id="recents">
 			</tbody>
 		</table>
 		<script type="text/javascript">
+			function publishPackage(ghurl) {
+				var form = document.createElement("form");
+				form.setAttribute("method", "POST");
+				form.setAttribute("action", "/pin_package");
+
+				var hiddenField = document.createElement("input");
+				hiddenField.setAttribute("type", "hidden");
+				hiddenField.setAttribute("name", "ghurl");
+				hiddenField.setAttribute("value", ghurl);
+
+				form.appendChild(hiddenField);
+
+				document.body.appendChild(form);
+				form.submit();
+			}
+
 			var req = new XMLHttpRequest()
 			req.open( "GET", "/status", false )
 			req.send( null )
@@ -70,8 +87,23 @@
 				v.innerText = r.Version
 				elem.appendChild(v)
 				hash = document.createElement("td")
-				hash.innerText = r.Hash
+				pre = document.createElement("pre")
+				pre.innerText = r.Hash
+				hash.appendChild(pre)
 				elem.appendChild(hash)
+
+				var repin = document.createElement("td")
+				var button = document.createElement("button")
+				button.innerText = "repin"
+
+				let thisghurl = r.Url
+				button.onclick = function() {
+					publishPackage(thisghurl)
+				}
+
+				repin.appendChild(button)
+				elem.appendChild(repin)
+
 				rtab.appendChild(elem)
 			}
 		</script>
