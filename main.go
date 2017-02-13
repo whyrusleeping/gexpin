@@ -85,6 +85,8 @@ func main() {
 		}
 
 		ghurl := r.FormValue("ghurl")
+		ghurl = strings.Replace(ghurl, "http://", "", 1)
+		ghurl = strings.Replace(ghurl, "https://", "", 1)
 		if !strings.HasPrefix(ghurl, "github.com/") {
 			http.Error(w, "not a github url!", 400)
 			return
@@ -197,5 +199,6 @@ func main() {
 	h := http.FileServer(http.Dir("."))
 	http.Handle("/", h)
 
+	fmt.Printf("Listening on :9444\n")
 	http.ListenAndServe(":9444", nil)
 }
